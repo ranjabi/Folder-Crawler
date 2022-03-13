@@ -40,7 +40,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.searchBtn = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -52,7 +53,6 @@
             this.label1.Size = new System.Drawing.Size(204, 37);
             this.label1.TabIndex = 0;
             this.label1.Text = "Folder Crawling";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -79,9 +79,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(143, 177);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(87, 15);
+            this.label4.Size = new System.Drawing.Size(102, 15);
             this.label4.TabIndex = 3;
-            this.label4.Text = "No File Chosen";
+            this.label4.Text = "No Folder Chosen";
             // 
             // label5
             // 
@@ -112,7 +112,6 @@
             this.label7.Size = new System.Drawing.Size(81, 30);
             this.label7.TabIndex = 6;
             this.label7.Text = "Output";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // radioButton1
             // 
@@ -144,6 +143,7 @@
             this.button1.TabIndex = 9;
             this.button1.Text = "Chose Folder";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox1
             // 
@@ -152,6 +152,7 @@
             this.textBox1.Size = new System.Drawing.Size(188, 23);
             this.textBox1.TabIndex = 10;
             this.textBox1.Text = "e.x. \"stima.pdf\"";
+            this.textBox1.Click += new System.EventHandler(this.textBox1_Click);
             // 
             // checkBox1
             // 
@@ -163,21 +164,32 @@
             this.checkBox1.Text = "Find All Occurance";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // searchBtn
             // 
-            this.button2.Location = new System.Drawing.Point(52, 382);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(140, 23);
-            this.button2.TabIndex = 12;
-            this.button2.Text = "Search";
-            this.button2.UseVisualStyleBackColor = true;
+            this.searchBtn.Location = new System.Drawing.Point(52, 382);
+            this.searchBtn.Name = "searchBtn";
+            this.searchBtn.Size = new System.Drawing.Size(140, 23);
+            this.searchBtn.TabIndex = 12;
+            this.searchBtn.Text = "Search";
+            this.searchBtn.UseVisualStyleBackColor = true;
+            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(52, 446);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(95, 15);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "Path yang dicari:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 550);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.searchBtn);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
@@ -211,6 +223,7 @@
         private Button button1;
         private TextBox textBox1;
         private CheckBox checkBox1;
-        private Button button2;
+        private Button searchBtn;
+        private Label label8;
     }
 }
