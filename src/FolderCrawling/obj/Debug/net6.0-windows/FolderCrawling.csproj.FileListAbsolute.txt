@@ -1,0 +1,17 @@
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\bin\Debug\net6.0-windows\FolderCrawling.exe
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\bin\Debug\net6.0-windows\FolderCrawling.deps.json
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\bin\Debug\net6.0-windows\FolderCrawling.runtimeconfig.json
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\bin\Debug\net6.0-windows\FolderCrawling.dll
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\bin\Debug\net6.0-windows\FolderCrawling.pdb
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.csproj.AssemblyReference.cache
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.Form1.resources
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.csproj.GenerateResource.cache
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.AssemblyInfoInputs.cache
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.AssemblyInfo.cs
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.csproj.CoreCompileInputs.cache
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.dll
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\refint\FolderCrawling.dll
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.pdb
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.genruntimeconfig.cache
+C:\Users\FikriRanjabi\source\repos\FolderCrawling\FolderCrawling\obj\Debug\net6.0-windows\ref\FolderCrawling.dll
