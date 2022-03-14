@@ -58,28 +58,42 @@ namespace FolderCrawling
         public static string searchVal = "";
     }
 
-    public class Node
+    class Node
     {
-        public string key;
-        public Node child;
-        public Node(string val)
+        public string Name;
+        public List<Node> Children = new List<Node>();
+        public Node(string name, List<Node> children)
         {
-            key = val;
-            child = null;
+            this.Name = name;
+            this.Children = new List<Node>();
         }
-    }
 
-    public class Tree
-    {
-        public Node root;
-        public Tree(string key)
+        public void PrintNode(string prefix)
         {
-            root = new Node(key);
+            //Console.WriteLine("{0} + {1}", prefix, this.Name);
+            foreach (Node n in Children)
+                if (Children.IndexOf(n) == Children.Count - 1)
+                    n.PrintNode(prefix + "    ");
+                else
+                    n.PrintNode(prefix + "   |");
         }
-        public Tree()
+        public Node searchNode(string val, Node node)
         {
-            root = null;
+            if (node.Name == val)
+            {
+                // Console.WriteLine($"node key: {node.key}");
+                return node;
+            }
+            else
+            {
+                for (int i = 0; i < node.Children.Count; i++)
+                {
+                    searchNode(val, node.Children[i]);
+                }
+            }
+            return node;
         }
+
     }
 
     class ViewerSample
@@ -94,12 +108,11 @@ namespace FolderCrawling
                 graph.FindNode(vertex).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
             }
         }
-        public static void findDir(string docPath, Microsoft.Msagl.Drawing.Graph graph, Tree tree)
+        public static void findDir(string docPath, Microsoft.Msagl.Drawing.Graph graph, Node tree)
         {
             //Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
             // Enumerasi docPath
             string root = docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
-            tree.root = new Node(root);
 
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(docPath));
             List<string> files = new List<string>(Directory.EnumerateFiles(docPath));
@@ -112,10 +125,11 @@ namespace FolderCrawling
                 parentFolderName = dir.Substring(dir.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
                 // Console.WriteLine($"dir: {dir}");
+                Node temp = new Node(parentFolderName, new List<Node>());
+                tree.Children.Add(temp);
                 graph.AddEdge(root, parentFolderName);
-                tree.root.child = new Node(parentFolderName);
-                findDir(dir, graph, tree);
-                
+                findDir(dir, graph, temp);
+
             }
 
             foreach (var file in files)
@@ -124,8 +138,10 @@ namespace FolderCrawling
                 parentFolderName = file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
                 // Console.WriteLine($"dir: {dir}");
+                Node temp = new Node(parentFolderName, new List<Node>());
+
+                tree.Children.Add(temp);
                 graph.AddEdge(root, parentFolderName);
-                tree.root.child = new Node(parentFolderName);
 
             }
             // return parentFolderName;
@@ -145,8 +161,7 @@ namespace FolderCrawling
             //string docPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string docPath = GlobalVar.selectedPath;
 
-            Tree tree = new Tree();
-            tree.root = new Node(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1));
+            Node tree = new Node(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), new List<Node>());
 
             findDir(docPath, graph, tree);
             DFS(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), GlobalVar.searchVal, graph);
