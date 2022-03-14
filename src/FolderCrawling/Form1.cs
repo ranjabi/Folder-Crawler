@@ -1,6 +1,9 @@
 
 using System;
 using System.IO;
+using System.Collections;
+using Microsoft.Msagl;
+using Microsoft.Msagl.Splines;
 namespace FolderCrawling
 
 {
@@ -33,6 +36,7 @@ namespace FolderCrawling
             {
                 string searchingPath = label4.Text + "\\...\\" + textBox1.Text;
                 label8.Text = searchingPath;
+                GlobalVar.searchVal = textBox1.Text;
                 ViewerSample.Launch();
             } else
             {
@@ -45,28 +49,60 @@ namespace FolderCrawling
             textBox1.Clear();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            
-
-        }
     }
 
     public static class GlobalVar
     {
         public static string selectedPath = "";
         public static bool isFolderChoosen = false;
+        public static string searchVal = "";
+    }
+
+    public class Node
+    {
+        public string key;
+        public Node child;
+        public Node(string val)
+        {
+            key = val;
+            child = null;
+        }
+    }
+
+    public class Tree
+    {
+        public Node root;
+        public Tree(string key)
+        {
+            root = new Node(key);
+        }
+        public Tree()
+        {
+            root = null;
+        }
     }
 
     class ViewerSample
     {
-        public static void findDir(string docPath, Microsoft.Msagl.Drawing.Graph graph)
+        public static void DFS(string vertex, string searchVal, Microsoft.Msagl.Drawing.Graph graph)
+        {
+            //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+            //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+            MessageBox.Show(graph.FindNode(vertex).Attr.Id);
+            if (graph.FindNode(vertex).Attr.Id == searchVal)
+            {
+                graph.FindNode(vertex).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+            }
+        }
+        public static void findDir(string docPath, Microsoft.Msagl.Drawing.Graph graph, Tree tree)
         {
             //Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
             // Enumerasi docPath
             string root = docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+            tree.root = new Node(root);
 
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(docPath));
+            List<string> files = new List<string>(Directory.EnumerateFiles(docPath));
 
             string parentFolderName = "";
 
@@ -77,22 +113,27 @@ namespace FolderCrawling
 
                 // Console.WriteLine($"dir: {dir}");
                 graph.AddEdge(root, parentFolderName);
-
-                if (Directory.GetDirectories(dir).Length > 0)
-                {
-                    findDir(dir, graph);
-                    // return parentFolderName;
-                }
-                else
-                {
-                    // return parentFolderName;
-                }
+                tree.root.child = new Node(parentFolderName);
+                findDir(dir, graph, tree);
                 
+            }
+
+            foreach (var file in files)
+            {
+                //Console.WriteLine($"{dir.Substring(dir.LastIndexOf(Path.DirectorySeparatorChar) + 1)}");
+                parentFolderName = file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+
+                // Console.WriteLine($"dir: {dir}");
+                graph.AddEdge(root, parentFolderName);
+                tree.root.child = new Node(parentFolderName);
+
             }
             // return parentFolderName;
         }
         public static void Launch()
         {
+            
+
             //create a form 
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
             //create a viewer object 
@@ -103,18 +144,12 @@ namespace FolderCrawling
 
             //string docPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string docPath = GlobalVar.selectedPath;
-            findDir(docPath, graph);
 
-            //create the graph content 
-            //graph.AddEdge("A", "B");
-            //graph.AddEdge("B", "C");
-            //graph.AddEdge("A", "C");
-            //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-            //graph.FindNode("B").Attr.FillColor = Microsoft.Msagl.Drawing.Color.MistyRose;
-            //Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
-            //c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
-            //c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
+            Tree tree = new Tree();
+            tree.root = new Node(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1));
 
+            findDir(docPath, graph, tree);
+            DFS(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), GlobalVar.searchVal, graph);
 
             //bind the graph to the viewer 
             viewer.Graph = graph;
