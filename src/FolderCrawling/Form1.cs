@@ -98,15 +98,51 @@ namespace FolderCrawling
 
     class ViewerSample
     {
-        public static void DFS(string vertex, string searchVal, Microsoft.Msagl.Drawing.Graph graph)
+        public static void initVisited(Node node, Dictionary<string, bool> visited)
+        {
+            foreach (Node temp in node.Children)
+            {
+                visited.Add(temp.Name, false);
+                initVisited(temp, visited);
+            }
+            
+        }
+        public static string DFS(string searchVal, string vertex, Dictionary<string, bool> visited, Node tree, Microsoft.Msagl.Drawing.Graph graph)
         {
             //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
             //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-            MessageBox.Show(graph.FindNode(vertex).Attr.Id);
-            if (graph.FindNode(vertex).Attr.Id == searchVal)
+            //MessageBox.Show(graph.FindNode(vertex).Attr.Id);
+            //if (graph.FindNode(vertex).Attr.Id == searchVal)
+            //{
+            //    graph.FindNode(vertex).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+            //}
+            if (vertex == searchVal)
             {
-                graph.FindNode(vertex).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+                graph.FindNode(searchVal).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+                return tree.Name;
             }
+
+            visited[vertex] = true;
+            graph.FindNode(vertex).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+            foreach(Node temp in tree.Children)
+            {
+                if (!visited[temp.Name])
+                {
+                    if (temp.Name == searchVal)
+                    {
+                        graph.FindNode(searchVal).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+                        return temp.Name;
+                    }
+                    string find = DFS(searchVal, temp.Name, visited, temp, graph);
+                    if (find == searchVal)
+                    {
+                        graph.FindNode(searchVal).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+                        return find;
+                    }
+                }
+            }
+            return null;
+
         }
         public static void findDir(string docPath, Microsoft.Msagl.Drawing.Graph graph, Node tree)
         {
@@ -164,7 +200,15 @@ namespace FolderCrawling
             Node tree = new Node(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), new List<Node>());
 
             findDir(docPath, graph, tree);
-            DFS(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), GlobalVar.searchVal, graph);
+
+            Dictionary<string, bool> visited = new Dictionary<string, bool>();
+            initVisited(tree, visited);
+            //foreach (KeyValuePair<string, bool> temp in visited)
+            //{
+            //    Console.WriteLine("Key: {0}, Value: {1}", temp.Key, temp.Value);
+            //}
+            //DFS(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), GlobalVar.searchVal, graph);
+            DFS(GlobalVar.searchVal, tree.Name, visited, tree, graph);
 
             //bind the graph to the viewer 
             viewer.Graph = graph;
