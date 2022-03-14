@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "tQrbcOCSzhobCr8fmQjpBdNf46RLqj+vm4onwfbtEbUJRgqWvmAYawwvQUayCJWlbYrRSYmdexZFcs+KEgeRhQ==",
+  "dgSpecHash": "ipCnDnGJEhyEmeZ6CarAZxk9fyStmHcZBWB6y0IfxY8XuzRXl79X/RzCkt8QtL0AM/6TzkKkhy1J8NbIVx/tqg==",
   "success": true,
   "projectFilePath": "C:\\Users\\FikriRanjabi\\source\\repos\\Folder-Crawling-BFS-DFS\\src\\FolderCrawling\\FolderCrawling.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\FikriRanjabi\\.nuget\\packages\\automaticgraphlayout\\1.1.11\\automaticgraphlayout.1.1.11.nupkg.sha512",
+    "C:\\Users\\FikriRanjabi\\.nuget\\packages\\automaticgraphlayout.drawing\\1.1.11\\automaticgraphlayout.drawing.1.1.11.nupkg.sha512",
+    "C:\\Users\\FikriRanjabi\\.nuget\\packages\\automaticgraphlayout.graphviewergdi\\1.1.11\\automaticgraphlayout.graphviewergdi.1.1.11.nupkg.sha512",
+    "C:\\Users\\FikriRanjabi\\.nuget\\packages\\automaticgraphlayout.wpfgraphcontrol\\1.1.11\\automaticgraphlayout.wpfgraphcontrol.1.1.11.nupkg.sha512"
+  ],
   "logs": []
 }

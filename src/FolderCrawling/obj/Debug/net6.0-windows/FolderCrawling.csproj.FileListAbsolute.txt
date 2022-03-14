@@ -21,7 +21,6 @@ C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bi
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Debug\net6.0-windows\FolderCrawling.dll
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Debug\net6.0-windows\FolderCrawling.pdb
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.csproj.AssemblyReference.cache
-C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.Form1.resources
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.csproj.GenerateResource.cache
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.AssemblyInfoInputs.cache
@@ -32,3 +31,9 @@ C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\ob
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.pdb
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.genruntimeconfig.cache
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\ref\FolderCrawling.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Debug\net6.0-windows\AutomaticGraphLayout.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Debug\net6.0-windows\AutomaticGraphLayout.Drawing.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Debug\net6.0-windows\Microsoft.Msagl.GraphViewerGdi.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Debug\net6.0-windows\Microsoft.Msagl.WpfGraphControl.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.csproj.CopyComplete
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.Form1.resources

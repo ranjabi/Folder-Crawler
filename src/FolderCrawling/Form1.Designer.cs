@@ -42,6 +42,8 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.searchBtn = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -183,11 +185,32 @@
             this.label8.TabIndex = 13;
             this.label8.Text = "Path yang dicari:";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(413, 202);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(43, 15);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "Dir List";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(336, 262);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 15;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 550);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.searchBtn);
             this.Controls.Add(this.checkBox1);
@@ -225,5 +248,7 @@
         private CheckBox checkBox1;
         private Button searchBtn;
         private Label label8;
+        private Label label9;
+        private Button button2;
     }
 }
