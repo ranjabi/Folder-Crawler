@@ -1,9 +1,10 @@
-
 using System;
 using System.IO;
 using System.Collections;
 using Microsoft.Msagl;
 using Microsoft.Msagl.Splines;
+using System;
+using System.Text.RegularExpressions;
 namespace FolderCrawling
 
 {
@@ -16,7 +17,7 @@ namespace FolderCrawling
         public Form1()
         {
             InitializeComponent();
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -38,7 +39,8 @@ namespace FolderCrawling
                 label8.Text = searchingPath;
                 GlobalVar.searchVal = textBox1.Text;
                 ViewerSample.Launch();
-            } else
+            }
+            else
             {
                 MessageBox.Show("Choose Folder First!");
             }
@@ -61,10 +63,12 @@ namespace FolderCrawling
     class Node
     {
         public string Name;
+        public string path;
         public List<Node> Children = new List<Node>();
-        public Node(string name, List<Node> children)
+        public Node(string name, string path, List<Node> children)
         {
             this.Name = name;
+            this.path = path;
             this.Children = new List<Node>();
         }
 
@@ -102,46 +106,47 @@ namespace FolderCrawling
         {
             foreach (Node temp in node.Children)
             {
-                visited.Add(temp.Name, false);
+                visited.Add(temp.path, false);
                 initVisited(temp, visited);
             }
-            
-        }
-        public static string DFS(string searchVal, string vertex, Dictionary<string, bool> visited, Node tree, Microsoft.Msagl.Drawing.Graph graph)
-        {
-            //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-            //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-            //MessageBox.Show(graph.FindNode(vertex).Attr.Id);
-            //if (graph.FindNode(vertex).Attr.Id == searchVal)
-            //{
-            //    graph.FindNode(vertex).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
-            //}
-            if (vertex == searchVal)
-            {
-                graph.FindNode(searchVal).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
-                return tree.Name;
-            }
 
-            visited[vertex] = true;
-            graph.FindNode(vertex).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-            foreach(Node temp in tree.Children)
+        }
+        public static String DFS(string searchVal, Dictionary<string, bool> visited, Node tree, Microsoft.Msagl.Drawing.Graph graph)
+        {
+            // Using regex to find searchVal followed by whitespace at the end of the word
+            searchVal =  @"\b" + searchVal + @"\s*";
+
+
+            graph.FindNode(tree.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+            visited[tree.path] = true;
+
+            if (Regex.IsMatch(tree.Name, searchVal))
             {
-                if (!visited[temp.Name])
+                graph.FindNode(tree.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+                //return tree.path;
+            }
+            
+            foreach (Node temp in tree.Children)
+            {
+                if (!visited[temp.path])
                 {
-                    if (temp.Name == searchVal)
+                    if (Regex.IsMatch(temp.Name, searchVal))
+                        //if () == searchVal)
                     {
-                        graph.FindNode(searchVal).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
-                        return temp.Name;
+
+                        graph.FindNode(temp.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+                        //return temp.path;
                     }
-                    string find = DFS(searchVal, temp.Name, visited, temp, graph);
-                    if (find == searchVal)
+                    String find = DFS(searchVal, visited, temp, graph); //
+                    if (Regex.IsMatch(find.Substring(find.LastIndexOf(Path.DirectorySeparatorChar) + 1), searchVal))
+                    //if () == searchval)
                     {
-                        graph.FindNode(searchVal).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
-                        return find;
+                        graph.FindNode(find.Substring(find.LastIndexOf(Path.DirectorySeparatorChar) + 1)).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+                        //return find;
                     }
                 }
             }
-            return null;
+            return "";
 
         }
         public static void findDir(string docPath, Microsoft.Msagl.Drawing.Graph graph, Node tree)
@@ -161,7 +166,11 @@ namespace FolderCrawling
                 parentFolderName = dir.Substring(dir.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
                 // Console.WriteLine($"dir: {dir}");
-                Node temp = new Node(parentFolderName, new List<Node>());
+                if (graph.FindNode(parentFolderName) != null)
+                {
+                    parentFolderName += " ";
+                }
+                Node temp = new Node(parentFolderName, dir, new List<Node>());
                 tree.Children.Add(temp);
                 graph.AddEdge(root, parentFolderName);
                 findDir(dir, graph, temp);
@@ -174,7 +183,7 @@ namespace FolderCrawling
                 parentFolderName = file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
                 // Console.WriteLine($"dir: {dir}");
-                Node temp = new Node(parentFolderName, new List<Node>());
+                Node temp = new Node(parentFolderName, file, new List<Node>());
 
                 tree.Children.Add(temp);
                 graph.AddEdge(root, parentFolderName);
@@ -184,7 +193,7 @@ namespace FolderCrawling
         }
         public static void Launch()
         {
-            
+
 
             //create a form 
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
@@ -197,7 +206,7 @@ namespace FolderCrawling
             //string docPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string docPath = GlobalVar.selectedPath;
 
-            Node tree = new Node(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), new List<Node>());
+            Node tree = new Node(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), docPath, new List<Node>());
 
             findDir(docPath, graph, tree);
 
@@ -208,7 +217,7 @@ namespace FolderCrawling
             //    Console.WriteLine("Key: {0}, Value: {1}", temp.Key, temp.Value);
             //}
             //DFS(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), GlobalVar.searchVal, graph);
-            DFS(GlobalVar.searchVal, tree.Name, visited, tree, graph);
+            DFS(GlobalVar.searchVal, visited, tree, graph);
 
             //bind the graph to the viewer 
             viewer.Graph = graph;
