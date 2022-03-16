@@ -17,7 +17,13 @@ namespace FolderCrawling
         public Form1()
         {
             InitializeComponent();
-
+            //linkLabel1.Location = new System.Drawing.Point(34, 56);
+            linkLabel1.Size = new System.Drawing.Size(224, 16);
+            linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(0, 8);
+            linkLabel1.Text = "Register Online.  \nVisit Microsoft. \n Visit MSN.";
+            linkLabel1.Links[0].LinkData = "C:\\";
+            linkLabel1.Links.Add(24, 9, "www.microsoft.com");
+            linkLabel1.Links.Add(42, 3, "www.msn.com");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -39,6 +45,11 @@ namespace FolderCrawling
                 label8.Text = searchingPath;
                 GlobalVar.searchVal = textBox1.Text;
                 ViewerSample.Launch();
+                foreach (string path in GlobalVar.foundPath)
+                {
+                    label9.Text += (path + "\n");
+                }
+                //label9.Text = "kambing";
             }
             else
             {
@@ -51,6 +62,28 @@ namespace FolderCrawling
             textBox1.Clear();
         }
 
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            GlobalVar.allOccurence = true;
+
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string target = e.Link.LinkData as string;
+            System.Diagnostics.Process.Start("explorer.exe"+ target + "" + "\"");
+        }
     }
 
     public static class GlobalVar
@@ -58,6 +91,8 @@ namespace FolderCrawling
         public static string selectedPath = "";
         public static bool isFolderChoosen = false;
         public static string searchVal = "";
+        public static bool allOccurence;
+        public static List<string> foundPath = new List<string>();
     }
 
     class Node
@@ -111,7 +146,7 @@ namespace FolderCrawling
             }
 
         }
-        public static String DFS(string searchVal, Dictionary<string, bool> visited, Node tree, Microsoft.Msagl.Drawing.Graph graph)
+        public static String DFS(List<string> foundPath, bool allOccurence, string searchVal, Dictionary<string, bool> visited, Node tree, Microsoft.Msagl.Drawing.Graph graph)
         {
             // Using regex to find searchVal followed by whitespace at the end of the word
             searchVal =  @"\b" + searchVal + @"\s*";
@@ -123,26 +158,39 @@ namespace FolderCrawling
             if (Regex.IsMatch(tree.Name, searchVal))
             {
                 graph.FindNode(tree.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
-                //return tree.path;
+                foundPath.Add(tree.path);
+                MessageBox.Show(tree.path + "1");
+                if (!allOccurence)
+                {
+                    return tree.path;
+                }
             }
             
             foreach (Node temp in tree.Children)
             {
                 if (!visited[temp.path])
                 {
-                    if (Regex.IsMatch(temp.Name, searchVal))
-                        //if () == searchVal)
-                    {
+                    //if (Regex.IsMatch(temp.Name, searchVal))
+                    //{
 
-                        graph.FindNode(temp.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
-                        //return temp.path;
-                    }
-                    String find = DFS(searchVal, visited, temp, graph); //
+                    //    graph.FindNode(temp.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+                    //    foundPath.Append(tree.path);
+                    //    MessageBox.Show(tree.path + "2");
+                    //    if (!allOccurence)
+                    //    {
+                    //        return temp.path;
+                    //    }
+                    //}
+                    String find = DFS(foundPath, allOccurence, searchVal, visited, temp, graph); //
                     if (Regex.IsMatch(find.Substring(find.LastIndexOf(Path.DirectorySeparatorChar) + 1), searchVal))
-                    //if () == searchval)
                     {
                         graph.FindNode(find.Substring(find.LastIndexOf(Path.DirectorySeparatorChar) + 1)).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
-                        //return find;
+                        //foundPath.Append(tree.path);
+                        MessageBox.Show(tree.path + "3");
+                        if (!allOccurence)
+                        {
+                            return find;
+                        }
                     }
                 }
             }
@@ -172,7 +220,12 @@ namespace FolderCrawling
                 }
                 Node temp = new Node(parentFolderName, dir, new List<Node>());
                 tree.Children.Add(temp);
+                //string id = graph.AddEdge(root, parentFolderName).Attr.Id;
+                //MessageBox.Show(id);
+
                 graph.AddEdge(root, parentFolderName);
+                //graph.RemoveEdge(temps);
+                //graph.RemoveEdge(graph.EdgeById)
                 findDir(dir, graph, temp);
 
             }
@@ -217,7 +270,7 @@ namespace FolderCrawling
             //    Console.WriteLine("Key: {0}, Value: {1}", temp.Key, temp.Value);
             //}
             //DFS(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), GlobalVar.searchVal, graph);
-            DFS(GlobalVar.searchVal, visited, tree, graph);
+            DFS(GlobalVar.foundPath, GlobalVar.allOccurence, GlobalVar.searchVal, visited, tree, graph);
 
             //bind the graph to the viewer 
             viewer.Graph = graph;
