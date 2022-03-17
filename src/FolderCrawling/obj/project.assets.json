@@ -115,7 +115,8 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\FikriRanjabi\\.nuget\\packages\\": {}
+    "C:\\Users\\FikriRanjabi\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
@@ -126,8 +127,12 @@
       "packagesPath": "C:\\Users\\FikriRanjabi\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\FikriRanjabi\\source\\repos\\Folder-Crawling-BFS-DFS\\src\\FolderCrawling\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
         "C:\\Users\\FikriRanjabi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
