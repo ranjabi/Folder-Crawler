@@ -37,7 +37,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
+            this.folderBtn = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.searchBtn = new System.Windows.Forms.Button();
@@ -140,15 +140,15 @@
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
-            // button1
+            // folderBtn
             // 
-            this.button1.Location = new System.Drawing.Point(52, 173);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(85, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Chose Folder";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.folderBtn.Location = new System.Drawing.Point(52, 173);
+            this.folderBtn.Name = "folderBtn";
+            this.folderBtn.Size = new System.Drawing.Size(85, 23);
+            this.folderBtn.TabIndex = 9;
+            this.folderBtn.Text = "Chose Folder";
+            this.folderBtn.UseVisualStyleBackColor = true;
+            this.folderBtn.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox1
             // 
@@ -207,7 +207,6 @@
             this.linkLabel1.TabIndex = 15;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "linkLabel1";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // panel1
             // 
@@ -228,7 +227,7 @@
             this.Controls.Add(this.searchBtn);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.folderBtn);
             this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.label7);
@@ -256,7 +255,7 @@
         private Label label7;
         private RadioButton radioButton1;
         private RadioButton radioButton2;
-        private Button button1;
+        private Button folderBtn;
         private TextBox textBox1;
         private CheckBox checkBox1;
         private Button searchBtn;
