@@ -7,6 +7,7 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using Edge = Microsoft.Msagl.Drawing.Edge;
+using MsaglDraw = Microsoft.Msagl.Drawing;
 namespace FolderCrawling
 
 {
@@ -164,12 +165,18 @@ namespace FolderCrawling
                 searchVal = @"^" + searchVal + @"\s*\b";
 
 
-                graph.FindNode(tree.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+                graph.FindNode(tree.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                // path biru ketimpa lagi sama path merah
+                //if (!(GlobalVar.edges[tree.prevPath.path+tree.path].Attr.Color) && (tree.prevPath != null))
+                //{
+                //    colorPath(tree.prevPath, tree, "red");
+                //}
                 visited[tree.path] = true;
 
                 if (Regex.IsMatch(tree.Name, searchVal))
                 {
-                    graph.FindNode(tree.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+                    graph.FindNode(tree.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                    colorPath(tree.prevPath, tree, "blue");
                     foundPath.Add(tree.path);
                     //MessageBox.Show(tree.path + "1");
                     if (!allOccurence)
@@ -185,10 +192,10 @@ namespace FolderCrawling
                         myNode find = DFS(foundPath, allOccurence, searchVal, visited, temp, graph); //
                         if (Regex.IsMatch(find.Name, searchVal))
                         {
-                            graph.FindNode(find.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+                            graph.FindNode(find.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                             MessageBox.Show(tree.path + "\n" + temp.path + "\n" + find.path);
                             //GlobalVar.edges[tree.path + temp.path].Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                            drawFoundPath(tree, temp);
+                            colorPath(tree, temp, "blue");
                             //foundPath.Append(tree.path);
                             //MessageBox.Show(tree.path + "3");
                             if (!allOccurence)
@@ -211,11 +218,11 @@ namespace FolderCrawling
                 GlobalVar.visited[startNode.path] = true;
                 if (Regex.IsMatch(startNode.Name, searchVal))
                 {
-                    graph.FindNode(startNode.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.YellowGreen;
+                    graph.FindNode(startNode.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                     found = true;
                 } else
                 {
-                    graph.FindNode(startNode.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+                    graph.FindNode(startNode.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
                 }
                 queue.Enqueue(startNode);
 
@@ -235,8 +242,8 @@ namespace FolderCrawling
                                 GlobalVar.visited[temp.path] = true;
                             if (Regex.IsMatch(temp.Name, searchVal))
                             {
-                                drawFoundPath(curNode, temp);
-                                graph.FindNode(temp.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.YellowGreen;
+                                colorPath(curNode, temp, "blue");
+                                graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                                 if (!allOccurence)
                                 {
                                     found = true;
@@ -244,7 +251,7 @@ namespace FolderCrawling
                             }
                             else
                             {
-                                graph.FindNode(temp.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+                                graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
                             }
                                 queue.Enqueue(temp);
                             }
@@ -252,13 +259,19 @@ namespace FolderCrawling
                     }
             }
 
-            public static void drawFoundPath(myNode source, myNode target)
+            public static void colorPath(myNode source, myNode target, string color)
             {
                 if (target.prevPath != null)
                 {
                     //MessageBox.Show(source.path + "," + target.path);
-                    GlobalVar.edges[source.path + target.path].Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                    drawFoundPath(source.prevPath, target.prevPath);
+                    if (color == "red")
+                    {
+                        GlobalVar.edges[source.path + target.path].Attr.Color = MsaglDraw.Color.Red;
+                    } else if (color == "blue")
+                    {
+                        GlobalVar.edges[source.path + target.path].Attr.Color = MsaglDraw.Color.Blue;
+                    }
+                    colorPath(source.prevPath, target.prevPath, color);
                 }
             }
 
