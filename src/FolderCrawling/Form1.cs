@@ -222,6 +222,7 @@ namespace FolderCrawling
                 //MessageBox.Show(searchVal);
                 Queue<Node> queue = new Queue<Node>();
                 GlobalVar.visited[startNode.path] = true;
+
                 if (Regex.IsMatch(startNode.Name, searchVal))
                 {
                     graph.FindNode(startNode.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
@@ -248,25 +249,27 @@ namespace FolderCrawling
                             if (!GlobalVar.visited[temp.path])
                             {
                                 GlobalVar.visited[temp.path] = true;
-                            GlobalVar.edges[temp.prevPath.path + temp.path].Attr.Color = MsaglDraw.Color.Red;
-                            if (Regex.Match(temp.Name, searchVal).Success)
-                            {
-                                //MessageBox.Show(temp.Name + "\n" + temp.path);
-                                colorPath(curNode, temp, "blue", graph);
-                                graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
-                                GlobalVar.foundPath.Add(temp.path);
-                                if (!allOccurence)
-                                {
-                                    found = true;
-                                    break;
-                                }
-                                //MessageBox.Show("break kelewat");
-                            }
-                            else
-                            {
-                                graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
-                            }
                                 queue.Enqueue(temp);
+
+                                GlobalVar.edges[temp.prevPath.path + temp.path].Attr.Color = MsaglDraw.Color.Red;
+
+                                if (Regex.Match(temp.Name, searchVal).Success)
+                                {
+                                    //MessageBox.Show(temp.Name + "\n" + temp.path);
+                                    colorPath(curNode, temp, "blue", graph);
+                                    graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                                    GlobalVar.foundPath.Add(temp.path);
+                                    if (!allOccurence)
+                                    {
+                                        found = true;
+                                        break;
+                                    }
+                                    //MessageBox.Show("break kelewat");
+                                } else
+                                {
+                                    graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                                }
+                                
                             }
                     }
                 }
@@ -303,6 +306,7 @@ namespace FolderCrawling
                 List<string> files = new List<string>(Directory.EnumerateFiles(docPath));
 
                 string parentFolderName = "";
+                
 
                 if (System.IO.Directory.GetDirectories(docPath).Length > 0)
                 {
@@ -336,13 +340,20 @@ namespace FolderCrawling
                 foreach (var file in files)
                 {
                     //Console.WriteLine($"{dir.Substring(dir.LastIndexOf(Path.DirectorySeparatorChar) + 1)}");
-                    parentFolderName = file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+                    GlobalVar.parentFileName = file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+                    if (graph.FindNode(GlobalVar.parentFileName) != null)
+                    {
+                        GlobalVar.addon += " ";
+                        GlobalVar.parentFileName += GlobalVar.addon;
+                        //temp.path += "1"
+                        //MessageBox.Show(root + parentFolderName);
+                    }
 
                     // Console.WriteLine($"dir: {dir}");
-                    Node temp = new Node(parentFolderName, tree, file, new List<Node>());
+                    Node temp = new Node(GlobalVar.parentFileName, tree, file, new List<Node>());
 
                     tree.Children.Add(temp);
-                    Edge tempEdge = graph.AddEdge(root, parentFolderName);
+                    Edge tempEdge = graph.AddEdge(root, GlobalVar.parentFileName);
                     GlobalVar.edges.Add(docPath+file, tempEdge);
 
                 }
@@ -401,7 +412,9 @@ namespace FolderCrawling
         public static string searchVal = "";
         public static bool allOccurence;
         public static string method;
-        public static List<string> foundPath = new List<string>();
+    public static string addon = "";
+    public static string parentFileName = "";
+    public static List<string> foundPath = new List<string>();
         public static Dictionary<string, Edge> edges = new Dictionary<string, Edge>();
         public static Dictionary<string, bool> visited = new Dictionary<string, bool>();
 }

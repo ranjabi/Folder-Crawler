@@ -1,0 +1,9 @@
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\publish\FolderCrawling.exe
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\publish\FolderCrawling.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\publish\FolderCrawling.deps.json
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\publish\FolderCrawling.runtimeconfig.json
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\publish\FolderCrawling.pdb
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\publish\AutomaticGraphLayout.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\publish\AutomaticGraphLayout.Drawing.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\publish\Microsoft.Msagl.GraphViewerGdi.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\publish\Microsoft.Msagl.WpfGraphControl.dll
