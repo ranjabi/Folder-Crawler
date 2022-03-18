@@ -3,11 +3,11 @@ using System.IO;
 using System.Collections;
 using Microsoft.Msagl;
 using Microsoft.Msagl.Splines;
-using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using Edge = Microsoft.Msagl.Drawing.Edge;
 using MsaglDraw = Microsoft.Msagl.Drawing;
+using System.Threading.Tasks;
 namespace FolderCrawling
 
 {
@@ -37,22 +37,34 @@ namespace FolderCrawling
         {
             if (GlobalVar.isFolderChoosen)
             {
+
+                
+                GlobalVar.foundPath.Clear();
+                //label9.Text = "Found Path: \n";
+
                 string searchingPath = label4.Text + "\\...\\" + textBox1.Text;
                 label8.Text = searchingPath;
-                GlobalVar.searchVal = textBox1.Text;
+
+                GlobalVar.searchVal = Regex.Escape(textBox1.Text);
                 GlobalVar.edges.Clear();
                 GlobalVar.visited.Clear();
                 Microsoft.Msagl.GraphViewerGdi.GViewer graphViewer = GraphViewer.Launch();
+
+                initializedFoundPath();
+
                 panel1.Controls.Clear();
                 panel1.SuspendLayout();
                 panel1.Controls.Add(graphViewer);
                 panel1.ResumeLayout();
                 //show the form 
                 panel1.Show();
-                foreach (string path in GlobalVar.foundPath)
-                {
-                    label9.Text += (path + "\n");
-                }
+
+                
+                
+                //foreach (string path in GlobalVar.foundPath)
+                //{
+                //    label9.Text += (path + "\n");
+                //}
                 //label9.Text = "kambing";
             }
             else
@@ -99,32 +111,45 @@ namespace FolderCrawling
 
         }
 
-        //private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        //{
-        //    // Determine which link was clicked within the LinkLabel.
-        //    this.linkLabel1.Links[linkLabel1.Links.IndexOf(e.Link)].Visited = true;
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string path = "";
+            int pathIndex = linkLabel1.Links.IndexOf(e.Link);
+            path = GlobalVar.foundPath[pathIndex];
 
-        //    // Display the appropriate link based on the value of the 
-        //    // LinkData property of the Link object.
-        //    string target = e.Link.LinkData as string;
+            FileAttributes attr = File.GetAttributes(path);
+            if (!attr.HasFlag(FileAttributes.Directory))
+            {
+                path = Path.GetDirectoryName(path);
+            }
 
-        //    // If the value looks like a URL, navigate to it.
-        //    // Otherwise, display it in a message box.
-        //    if (null != target && target.StartsWith("www"))
-        //    {
-        //        System.Diagnostics.Process.Start(target);
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Item clicked: " + target);
-        //    }
-        //}
+            //System.Diagnostics.Process.Start("Chrome.exe", path);
+            System.Diagnostics.Process.Start("explorer.exe", "\"" + path + "\"");
+        }
+
+        public void initializedFoundPath()
+        {
+            linkLabel1.Links.Clear();
+            linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            string allPath = "";
+            foreach (string foundPath in GlobalVar.foundPath)
+            {
+                allPath += foundPath + "\n";
+            }
+            linkLabel1.Text = allPath;
+            string dirFilePath = "";
+            foreach (string foundPath in GlobalVar.foundPath)
+            {
+                linkLabel1.Links.Add(allPath.IndexOf(foundPath), foundPath.Length);
+            }
+        }
         
         class GraphViewer
         {
             public static void initVisited(Node node, Dictionary<string, bool> visited)
             // add all file and folder directory to visited and set it's value to false
             {
+                
                 foreach (Node temp in node.Children)
                 {
                     visited.Add(temp.path, false);
@@ -136,21 +161,25 @@ namespace FolderCrawling
             // perform BFS
             {
                 // using regex to find searchVal followed by whitespace at the end of the word
-                searchVal = @"^" + searchVal + @"\s*\b";
+                string tempSearchVal = @"^" + searchVal + @"\s*\b";
+
+
+                //MessageBox.Show(tempSearchVal);
 
 
                 graph.FindNode(tree.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
-                // path biru ketimpa lagi sama path merah
-                //if (!(GlobalVar.edges[tree.prevPath.path+tree.path].Attr.Color) && (tree.prevPath != null))
-                //{
-                //    colorPath(tree.prevPath, tree, "red");
-                //}
+
+                if (tree.prevPath != null)
+                {
+                    GlobalVar.edges[tree.prevPath.path + tree.path].Attr.Color = MsaglDraw.Color.Red;
+                }
+
                 visited[tree.path] = true;
 
-                if (Regex.IsMatch(tree.Name, searchVal))
+                if (Regex.IsMatch(tree.Name, tempSearchVal))
                 {
                     graph.FindNode(tree.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
-                    colorPath(tree.prevPath, tree, "blue");
+                    colorPath(tree.prevPath, tree, "blue", graph);
                     foundPath.Add(tree.path);
                     //MessageBox.Show(tree.path + "1");
                     if (!allOccurence)
@@ -164,13 +193,12 @@ namespace FolderCrawling
                     if (!visited[temp.path])
                     {
                         Node find = DFS(foundPath, allOccurence, searchVal, visited, temp, graph); //
-                        if (Regex.IsMatch(find.Name, searchVal))
+                        if (Regex.IsMatch(find.Name, tempSearchVal))
                         {
                             graph.FindNode(find.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
-                            MessageBox.Show(tree.path + "\n" + temp.path + "\n" + find.path);
-                            //GlobalVar.edges[tree.path + temp.path].Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                            colorPath(tree, temp, "blue");
-                            //foundPath.Append(tree.path);
+                            //MessageBox.Show(tree.path + "\n" + temp.path + "\n" + find.path);
+                            colorPath(tree, temp, "blue", graph);
+                            foundPath.Append(tree.path);
                             //MessageBox.Show(tree.path + "3");
                             if (!allOccurence)
                             {
@@ -187,42 +215,52 @@ namespace FolderCrawling
             public static void BFS(string docPath, Node startNode, string searchVal, Microsoft.Msagl.Drawing.Graph graph, bool allOccurence)
             // perform DFS
             {
+                //await Task.Delay(500);
                 bool found = false;
                 searchVal = @"^" + searchVal + @"\s*\b";
+
+                //MessageBox.Show(searchVal);
                 Queue<Node> queue = new Queue<Node>();
                 GlobalVar.visited[startNode.path] = true;
                 if (Regex.IsMatch(startNode.Name, searchVal))
                 {
                     graph.FindNode(startNode.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                     found = true;
+                    GlobalVar.foundPath.Add(startNode.path);
+                    //MessageBox.Show("ini regex pertama");
+                    if (!allOccurence)
+                    {
+                        return;
+                    }
                 } else
                 {
                     graph.FindNode(startNode.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
                 }
                 queue.Enqueue(startNode);
 
-
-
                     while ((queue.Count > 0) && !found)
-                    {
-                        Node curNode = queue.Dequeue();
-                    //foreach (Node node in curNode.Children)
-                    //{
-                    //    MessageBox.Show(node.path);
-                    //}
+                {
+                    Node curNode = queue.Dequeue();
                     foreach (Node temp in curNode.Children)
                         {
+                        
+                        //MessageBox.Show("foreach: " + temp.Name + "\n" + temp.path);
                             if (!GlobalVar.visited[temp.path])
                             {
                                 GlobalVar.visited[temp.path] = true;
-                            if (Regex.IsMatch(temp.Name, searchVal))
+                            GlobalVar.edges[temp.prevPath.path + temp.path].Attr.Color = MsaglDraw.Color.Red;
+                            if (Regex.Match(temp.Name, searchVal).Success)
                             {
-                                colorPath(curNode, temp, "blue");
+                                //MessageBox.Show(temp.Name + "\n" + temp.path);
+                                colorPath(curNode, temp, "blue", graph);
                                 graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                                GlobalVar.foundPath.Add(temp.path);
                                 if (!allOccurence)
                                 {
                                     found = true;
+                                    break;
                                 }
+                                //MessageBox.Show("break kelewat");
                             }
                             else
                             {
@@ -230,11 +268,11 @@ namespace FolderCrawling
                             }
                                 queue.Enqueue(temp);
                             }
-                        }
                     }
+                }
             }
 
-            public static void colorPath(Node source, Node target, string color)
+            public static void colorPath(Node source, Node target, string color, Microsoft.Msagl.Drawing.Graph graph)
             // fill the edge color between source and target node
             {
                 if (target.prevPath != null)
@@ -243,11 +281,15 @@ namespace FolderCrawling
                     if (color == "red")
                     {
                         GlobalVar.edges[source.path + target.path].Attr.Color = MsaglDraw.Color.Red;
+                        graph.FindNode(target.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                        graph.FindNode(source.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
                     } else if (color == "blue")
                     {
                         GlobalVar.edges[source.path + target.path].Attr.Color = MsaglDraw.Color.Blue;
+                        graph.FindNode(target.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                        graph.FindNode(source.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                     }
-                    colorPath(source.prevPath, target.prevPath, color);
+                    colorPath(source.prevPath, target.prevPath, color, graph);
                 }
             }
 
@@ -325,7 +367,7 @@ namespace FolderCrawling
 
                 findDir(tree.path, graph, tree);
 
-                
+                GlobalVar.visited.Add(tree.path, false);
                 initVisited(tree, GlobalVar.visited);
                 ////////////////////////////
                 if (GlobalVar.method == "DFS")
@@ -347,6 +389,8 @@ namespace FolderCrawling
 
             }
         }
+
+
     }
 }
 
