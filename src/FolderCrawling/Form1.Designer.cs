@@ -45,6 +45,9 @@
             this.label9 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label10 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -123,7 +126,6 @@
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(44, 19);
             this.radioButton1.TabIndex = 7;
-            this.radioButton1.TabStop = true;
             this.radioButton1.Text = "BFS";
             this.radioButton1.UseVisualStyleBackColor = true;
             this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
@@ -135,7 +137,6 @@
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(45, 19);
             this.radioButton2.TabIndex = 8;
-            this.radioButton2.TabStop = true;
             this.radioButton2.Text = "DFS";
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
@@ -222,11 +223,35 @@
             this.panel1.Size = new System.Drawing.Size(671, 393);
             this.panel1.TabIndex = 16;
             // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(52, 431);
+            this.trackBar1.Maximum = 1000;
+            this.trackBar1.Minimum = 100;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(104, 45);
+            this.trackBar1.SmallChange = 100;
+            this.trackBar1.TabIndex = 0;
+            this.trackBar1.TickFrequency = 100;
+            this.trackBar1.Value = 100;
+            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(53, 479);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(25, 15);
+            this.label10.TabIndex = 17;
+            this.label10.Text = "100";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(965, 614);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label9);
@@ -246,6 +271,8 @@
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -269,6 +296,8 @@
         private Label label8;
         private Label label9;
         private LinkLabel linkLabel1;
-        private Panel panel1;
+        public Panel panel1;
+        private TrackBar trackBar1;
+        private Label label10;
     }
 }

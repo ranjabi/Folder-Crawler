@@ -20,6 +20,13 @@ namespace FolderCrawling
             InitializeComponent();
         }
 
+        public static int delay = int.Parse(Program.form1.label10.Text);
+
+        public Panel getPanel()
+        {
+            return this.panel1;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         // choose folder button
         {
@@ -32,13 +39,32 @@ namespace FolderCrawling
             }
         }
 
-        private void searchBtn_Click(object sender, EventArgs e)
+        async static void UseDelay()
+        {
+            await Task.Delay(1000); // wait for 1 second
+        }
+
+       public static void updateGraph()
+        {
+            //await Task.Delay(1000);
+            GlobalVar.viewer.Graph = GlobalVar.graph;
+            Program.form1.panel1.SuspendLayout();
+            GlobalVar.viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            Program.form1.panel1.Controls.Add(GlobalVar.viewer);
+            Program.form1.panel1.ResumeLayout();
+            ////show the form 
+            //Program.form1.panel1.Show();
+            
+        }
+
+        private async void searchBtn_Click(object sender, EventArgs e)
         // search button
         {
             if (GlobalVar.isFolderChoosen)
             {
 
-                
+                GlobalVar.found = false;
+                GlobalVar.graph = new Microsoft.Msagl.Drawing.Graph("graph");
                 GlobalVar.foundPath.Clear();
                 //label9.Text = "Found Path: \n";
 
@@ -48,16 +74,11 @@ namespace FolderCrawling
                 GlobalVar.searchVal = Regex.Escape(textBox1.Text);
                 GlobalVar.edges.Clear();
                 GlobalVar.visited.Clear();
-                Microsoft.Msagl.GraphViewerGdi.GViewer graphViewer = GraphViewer.Launch();
+                
 
+                var task1 = GraphViewer.Launch();
+                await Task.WhenAll(task1);
                 initializedFoundPath();
-
-                panel1.Controls.Clear();
-                panel1.SuspendLayout();
-                panel1.Controls.Add(graphViewer);
-                panel1.ResumeLayout();
-                //show the form 
-                panel1.Show();
 
                 
                 
@@ -129,37 +150,44 @@ namespace FolderCrawling
 
         public void initializedFoundPath()
         {
-            linkLabel1.Links.Clear();
-            linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            string allPath = "";
-            foreach (string foundPath in GlobalVar.foundPath)
-            {
-                allPath += foundPath + "\n";
-            }
-            linkLabel1.Text = allPath;
-            string dirFilePath = "";
-            foreach (string foundPath in GlobalVar.foundPath)
-            {
-                linkLabel1.Links.Add(allPath.IndexOf(foundPath), foundPath.Length);
-            }
+
+                linkLabel1.Links.Clear();
+                linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+                string allPath = "";
+                foreach (string foundPath in GlobalVar.foundPath)
+                {
+                    allPath += foundPath + "\n";
+                }
+                linkLabel1.Text = allPath;
+                string dirFilePath = "";
+                foreach (string foundPath in GlobalVar.foundPath)
+                {
+                    linkLabel1.Links.Add(allPath.IndexOf(foundPath), foundPath.Length);
+                }
         }
-        
+
         class GraphViewer
         {
             public static void initVisited(Node node, Dictionary<string, bool> visited)
             // add all file and folder directory to visited and set it's value to false
             {
-                
+
                 foreach (Node temp in node.Children)
                 {
                     visited.Add(temp.path, false);
                     initVisited(temp, visited);
-                }
+        }
 
             }
-            public static Node DFS(List<string> foundPath, bool allOccurence, string searchVal, Dictionary<string, bool> visited, Node tree, Microsoft.Msagl.Drawing.Graph graph)
+
+            public static async Task DFS(List<string> foundPath, bool allOccurence, string searchVal, Dictionary<string, bool> visited, Node tree, Microsoft.Msagl.Drawing.Graph graph)
             // perform BFS
             {
+
+                if (!allOccurence && GlobalVar.found)
+                {
+                    return;
+                }
                 // using regex to find searchVal followed by whitespace at the end of the word
                 string tempSearchVal = @"^" + searchVal + @"\s*\b";
 
@@ -168,10 +196,15 @@ namespace FolderCrawling
 
 
                 graph.FindNode(tree.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                //Form1.updateGraph();
+                //await Task.Delay(delay);
+                //await Task.Delay(delay);
 
                 if (tree.prevPath != null)
                 {
                     GlobalVar.edges[tree.prevPath.path + tree.path].Attr.Color = MsaglDraw.Color.Red;
+                    Form1.updateGraph();
+                    await Task.Delay(delay);
                 }
 
                 visited[tree.path] = true;
@@ -179,43 +212,51 @@ namespace FolderCrawling
                 if (Regex.IsMatch(tree.Name, tempSearchVal))
                 {
                     graph.FindNode(tree.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+
                     colorPath(tree.prevPath, tree, "blue", graph);
                     foundPath.Add(tree.path);
-                    //MessageBox.Show(tree.path + "1");
+                    Form1.updateGraph();
+                    await Task.Delay(delay);
                     if (!allOccurence)
                     {
-                        return tree;
+                        GlobalVar.found = true;
+                        return;
                     }
+                    //MessageBox.Show(tree.path + "1");
+
                 }
 
                 foreach (Node temp in tree.Children)
                 {
                     if (!visited[temp.path])
                     {
-                        Node find = DFS(foundPath, allOccurence, searchVal, visited, temp, graph); //
-                        if (Regex.IsMatch(find.Name, tempSearchVal))
-                        {
-                            graph.FindNode(find.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
-                            //MessageBox.Show(tree.path + "\n" + temp.path + "\n" + find.path);
-                            colorPath(tree, temp, "blue", graph);
-                            foundPath.Append(tree.path);
-                            //MessageBox.Show(tree.path + "3");
-                            if (!allOccurence)
-                            {
-                                //break;
-                                return find;
-                            }
-                        }
+                        //Node find = 
+                        await DFS(foundPath, allOccurence, searchVal, visited, temp, graph);
+                        //
+                        //if (Regex.IsMatch(find.Name, tempSearchVal))
+                        //{
+                        //    graph.FindNode(find.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                        //    Form1.updateGraph();
+                        //    UseDelay();
+                        //    //MessageBox.Show(tree.path + "\n" + temp.path + "\n" + find.path);
+                        //    colorPath(tree, temp, "blue", graph);
+                        //    foundPath.Append(tree.path);
+                        //    //MessageBox.Show(tree.path + "3");
+                        //if (!allOccurence)
+                        //{
+                        //    found = true;
+                        //    break;
+                        //}
+                        //}
                     }
                 }
-                return tree;
+                return;
 
             }
 
-            public static void BFS(string docPath, Node startNode, string searchVal, Microsoft.Msagl.Drawing.Graph graph, bool allOccurence)
+            static async Task BFS(string docPath, Node startNode, string searchVal, Microsoft.Msagl.Drawing.Graph graph, bool allOccurence)
             // perform DFS
             {
-                //await Task.Delay(500);
                 bool found = false;
                 searchVal = @"^" + searchVal + @"\s*\b";
 
@@ -226,6 +267,8 @@ namespace FolderCrawling
                 if (Regex.IsMatch(startNode.Name, searchVal))
                 {
                     graph.FindNode(startNode.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                    Form1.updateGraph();
+                    await Task.Delay(delay);
                     found = true;
                     GlobalVar.foundPath.Add(startNode.path);
                     //MessageBox.Show("ini regex pertama");
@@ -233,44 +276,55 @@ namespace FolderCrawling
                     {
                         return;
                     }
-                } else
+                }
+                else
                 {
                     graph.FindNode(startNode.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                    Form1.updateGraph();
+                    await Task.Delay(500);
                 }
                 queue.Enqueue(startNode);
 
-                    while ((queue.Count > 0) && !found)
+                while ((queue.Count > 0) && !found)
                 {
                     Node curNode = queue.Dequeue();
                     foreach (Node temp in curNode.Children)
-                        {
-                        
+                    {
+
                         //MessageBox.Show("foreach: " + temp.Name + "\n" + temp.path);
-                            if (!GlobalVar.visited[temp.path])
+                        if (!GlobalVar.visited[temp.path])
+                        {
+                            GlobalVar.visited[temp.path] = true;
+                            queue.Enqueue(temp);
+                            Form1.UseDelay();
+
+                            GlobalVar.edges[temp.prevPath.path + temp.path].Attr.Color = MsaglDraw.Color.Red;
+                            Form1.updateGraph();
+                            await Task.Delay(delay);
+
+                            if (Regex.Match(temp.Name, searchVal).Success)
                             {
-                                GlobalVar.visited[temp.path] = true;
-                                queue.Enqueue(temp);
-
-                                GlobalVar.edges[temp.prevPath.path + temp.path].Attr.Color = MsaglDraw.Color.Red;
-
-                                if (Regex.Match(temp.Name, searchVal).Success)
+                                //MessageBox.Show(temp.Name + "\n" + temp.path);
+                                colorPath(curNode, temp, "blue", graph);
+                                graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                                Form1.updateGraph();
+                                await Task.Delay(500);
+                                GlobalVar.foundPath.Add(temp.path);
+                                if (!allOccurence)
                                 {
-                                    //MessageBox.Show(temp.Name + "\n" + temp.path);
-                                    colorPath(curNode, temp, "blue", graph);
-                                    graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
-                                    GlobalVar.foundPath.Add(temp.path);
-                                    if (!allOccurence)
-                                    {
-                                        found = true;
-                                        break;
-                                    }
-                                    //MessageBox.Show("break kelewat");
-                                } else
-                                {
-                                    graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                                    found = true;
+                                    break;
                                 }
-                                
+                                //MessageBox.Show("break kelewat");
                             }
+                            else
+                            {
+                                graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                                Form1.updateGraph();
+                                await Task.Delay(delay);
+                            }
+
+                        }
                     }
                 }
             }
@@ -286,7 +340,8 @@ namespace FolderCrawling
                         GlobalVar.edges[source.path + target.path].Attr.Color = MsaglDraw.Color.Red;
                         graph.FindNode(target.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
                         graph.FindNode(source.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
-                    } else if (color == "blue")
+                    }
+                    else if (color == "blue")
                     {
                         GlobalVar.edges[source.path + target.path].Attr.Color = MsaglDraw.Color.Blue;
                         graph.FindNode(target.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
@@ -296,7 +351,7 @@ namespace FolderCrawling
                 }
             }
 
-            public static void findDir(string docPath, Microsoft.Msagl.Drawing.Graph graph, Node tree)
+            static async Task findDir(string docPath, Microsoft.Msagl.Drawing.Graph graph, Node tree)
             // draw all file and folder directory to graph
             {
                 // Enumerasi docPath
@@ -306,7 +361,7 @@ namespace FolderCrawling
                 List<string> files = new List<string>(Directory.EnumerateFiles(docPath));
 
                 string parentFolderName = "";
-                
+
 
                 if (System.IO.Directory.GetDirectories(docPath).Length > 0)
                 {
@@ -328,11 +383,16 @@ namespace FolderCrawling
                         tree.Children.Add(temp);
 
                         Edge tempEdge = graph.AddEdge(root, parentFolderName);
+                        Form1.updateGraph();
+                        //await Task.Delay(500);
                         //MessageBox.Show(root + "," + parentFolderName);
-                        GlobalVar.edges.Add(docPath+dir, tempEdge);
+                        GlobalVar.edges.Add(docPath + dir, tempEdge);
+                        //Form1.updateGraph();
+                        //Form1.upda
                         //graph.RemoveEdge(temps);
                         //graph.RemoveEdge(graph.EdgeById)
-                        findDir(temp.path, graph, temp);
+
+                        await findDir(temp.path, graph, temp);
 
                     }
                 }
@@ -354,21 +414,23 @@ namespace FolderCrawling
 
                     tree.Children.Add(temp);
                     Edge tempEdge = graph.AddEdge(root, GlobalVar.parentFileName);
-                    GlobalVar.edges.Add(docPath+file, tempEdge);
+                    Form1.updateGraph();
+                    //await Task.Delay(500);
+                    GlobalVar.edges.Add(docPath + file, tempEdge);
 
                 }
-                // return parentFolderName;
             }
-            public static Microsoft.Msagl.GraphViewerGdi.GViewer Launch()
+
+            public static async Task Launch()
             {
 
 
                 //create a form 
                 //System.Windows.Forms.Form form = new System.Windows.Forms.Form();
                 //create a viewer object 
-                Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+
                 //create a graph object 
-                Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+
 
 
                 //string docPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -376,36 +438,46 @@ namespace FolderCrawling
 
                 Node tree = new Node(docPath.Substring(docPath.LastIndexOf(Path.DirectorySeparatorChar) + 1), null, docPath, new List<Node>());
 
-                findDir(tree.path, graph, tree);
+                findDir(tree.path, GlobalVar.graph, tree);
 
                 GlobalVar.visited.Add(tree.path, false);
                 initVisited(tree, GlobalVar.visited);
                 ////////////////////////////
                 if (GlobalVar.method == "DFS")
                 {
-                    DFS(GlobalVar.foundPath, GlobalVar.allOccurence, GlobalVar.searchVal, GlobalVar.visited, tree, graph);
-                } else if (GlobalVar.method == "BFS")
+                    await DFS(GlobalVar.foundPath, GlobalVar.allOccurence, GlobalVar.searchVal, GlobalVar.visited, tree, GlobalVar.graph);
+                }
+                else if (GlobalVar.method == "BFS")
                 {
 
-                    BFS(GlobalVar.selectedPath, tree, GlobalVar.searchVal, graph, GlobalVar.allOccurence);
+                    await BFS(GlobalVar.selectedPath, tree, GlobalVar.searchVal, GlobalVar.graph, GlobalVar.allOccurence);
                 }
 
                 //GlobalVar.edges["srcconfig"].Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
-                //bind the graph to the viewer 
-                viewer.Graph = graph;
-                //associate the viewer with the form 
-                viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-                return viewer;
+
+                ////bind the graph to the viewer 
+                //GlobalVar.viewer.Graph = GlobalVar.graph;
+                ////associate the viewer with the form 
+                //GlobalVar.viewer.Dock = System.Windows.Forms.DockStyle.Fill;
 
 
             }
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
 
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            label10.Text = trackBar1.Value.ToString(); 
+        }
     }
 }
 
-    public static class GlobalVar
+
+public static class GlobalVar
     {
         public static string selectedPath = "";
         public static bool isFolderChoosen = false;
@@ -417,6 +489,11 @@ namespace FolderCrawling
     public static List<string> foundPath = new List<string>();
         public static Dictionary<string, Edge> edges = new Dictionary<string, Edge>();
         public static Dictionary<string, bool> visited = new Dictionary<string, bool>();
+    public static Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+    public static Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+    public static bool found = false;
+
+
 }
 
 
@@ -462,7 +539,3 @@ namespace FolderCrawling
         }
 
     }
-
-    class ViewerSample
-    {
-}
