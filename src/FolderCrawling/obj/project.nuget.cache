@@ -1,13 +1,25 @@
 {
   "version": 2,
-  "dgSpecHash": "fg48CgZe61AMhOYqtYOh2qPPSUIeMFvX3dba3VUGCRXDIGoGAGHLx46O3dNV3pZjz/kXhQljvJePMI/2WylvSg==",
+  "dgSpecHash": "n1IvOcJgC0P73xfjh4tjaZAluUwVVyTwA5GEIDbHXSz347GG6StuKXHqNTtNOuD3ZpYMfWZWC1rhjHRaDDIuYg==",
   "success": true,
   "projectFilePath": "C:\\Users\\FikriRanjabi\\source\\repos\\Folder-Crawling-BFS-DFS\\src\\FolderCrawling\\FolderCrawling.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\FikriRanjabi\\.nuget\\packages\\automaticgraphlayout\\1.1.11\\automaticgraphlayout.1.1.11.nupkg.sha512",
     "C:\\Users\\FikriRanjabi\\.nuget\\packages\\automaticgraphlayout.drawing\\1.1.11\\automaticgraphlayout.drawing.1.1.11.nupkg.sha512",
     "C:\\Users\\FikriRanjabi\\.nuget\\packages\\automaticgraphlayout.graphviewergdi\\1.1.11\\automaticgraphlayout.graphviewergdi.1.1.11.nupkg.sha512",
-    "C:\\Users\\FikriRanjabi\\.nuget\\packages\\automaticgraphlayout.wpfgraphcontrol\\1.1.11\\automaticgraphlayout.wpfgraphcontrol.1.1.11.nupkg.sha512"
+    "C:\\Users\\FikriRanjabi\\.nuget\\packages\\automaticgraphlayout.wpfgraphcontrol\\1.1.11\\automaticgraphlayout.wpfgraphcontrol.1.1.11.nupkg.sha512",
+    "C:\\Users\\FikriRanjabi\\.nuget\\packages\\materialskin\\0.2.1\\materialskin.0.2.1.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MaterialSkin 0.2.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "MaterialSkin",
+      "targetGraphs": [
+        "net6.0-windows7.0"
+      ]
+    }
+  ]
 }

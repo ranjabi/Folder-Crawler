@@ -37,3 +37,5 @@ C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bi
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Debug\net6.0-windows\Microsoft.Msagl.WpfGraphControl.dll
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.csproj.CopyComplete
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.Form1.resources
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Debug\net6.0-windows\MaterialSkin.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Debug\net6.0-windows\FolderCrawling.Properties.Resources.resources

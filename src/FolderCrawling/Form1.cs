@@ -8,18 +8,32 @@ using System.Text.RegularExpressions;
 using Edge = Microsoft.Msagl.Drawing.Edge;
 using MsaglDraw = Microsoft.Msagl.Drawing;
 using System.Threading.Tasks;
+using MaterialSkin;
+using MaterialSkin.Controls;
+
 namespace FolderCrawling
 
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MaterialForm
     {
         public Form1()
         {
             InitializeComponent();
+
+            MaterialSkinManager materialSkin = MaterialSkinManager.Instance;
+            materialSkin.AddFormToManage(this);
+            materialSkin.Theme = MaterialSkinManager.Themes.LIGHT;
+
+            materialSkin.ColorScheme = new ColorScheme(
+                    Primary.Blue400, Primary.Blue500,
+                    Primary.Blue500, Accent.LightBlue200,
+                    TextShade.WHITE
+                );
+
         }
 
         // delay used for visualization
-        public static int delay = int.Parse(Program.form1.label10.Text);
+        public static int delay = int.Parse(Program.form1.materialLabel5.Text);
 
         private void button1_Click(object sender, EventArgs e)
         // choose folder/file button
@@ -29,7 +43,7 @@ namespace FolderCrawling
             {
                 // assign selected folder/file path
                 GlobalVar.selectedPath = dialog.SelectedPath;
-                label4.Text = GlobalVar.selectedPath;
+                materialLabel1.Text = GlobalVar.selectedPath;
                 GlobalVar.isFolderChoosen = true;
             }
         }
@@ -54,10 +68,10 @@ namespace FolderCrawling
                 GlobalVar.graph = new Microsoft.Msagl.Drawing.Graph("graph");
                 GlobalVar.foundPath.Clear();
 
-                string searchingPath = label4.Text + "\\...\\" + textBox1.Text;
-                label8.Text = searchingPath;
+                string searchingPath = materialLabel1.Text + "\\...\\" + materialSingleLineTextField1.Text;
+                materialLabel7.Text = searchingPath;
 
-                GlobalVar.searchVal = Regex.Escape(textBox1.Text); // assign file/folder name to search value
+                GlobalVar.searchVal = Regex.Escape(materialSingleLineTextField1.Text); // assign file/folder name to search value
                 GlobalVar.edges.Clear();
                 GlobalVar.visited.Clear();
 
@@ -75,13 +89,14 @@ namespace FolderCrawling
         private void textBox1_Click(object sender, EventArgs e)
         // filename textbox
         {
-            textBox1.Clear();
+            //textBox1.Clear();
+            materialSingleLineTextField1.Clear();
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         // bfs radiobutton
         {
-            if (radioButton1.Checked) {
+            if (materialRadioButton1.Checked) {
                 GlobalVar.method = "BFS";
             }
         }
@@ -89,7 +104,7 @@ namespace FolderCrawling
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         // dfs radiobutton
         {
-            if (radioButton2.Checked)
+            if (materialRadioButton2.Checked)
             {
                 GlobalVar.method = "DFS";
             }
@@ -386,10 +401,61 @@ namespace FolderCrawling
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         // delay value
         {
-            label10.Text = trackBar1.Value.ToString(); 
+            //label10.Text = trackBar1.Value.ToString(); 
+            materialLabel5.Text = trackBar1.Value.ToString();
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialLabel1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialRadioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialLabel5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialLabel7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialLabel6_Click(object sender, EventArgs e)
         {
 
         }
