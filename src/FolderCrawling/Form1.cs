@@ -33,7 +33,7 @@ namespace FolderCrawling
         }
 
         // delay used for visualization
-        public static int delay = int.Parse(Program.form1.materialLabel5.Text);
+        public static int delay = int.Parse(Program.form1.trackBar1.Value.ToString());
 
         private void button1_Click(object sender, EventArgs e)
         // choose folder/file button
@@ -63,7 +63,7 @@ namespace FolderCrawling
         {
             if (GlobalVar.isFolderChoosen)
             {
-
+                delay = int.Parse(Program.form1.trackBar1.Value.ToString());
                 GlobalVar.found = false;
                 GlobalVar.graph = new Microsoft.Msagl.Drawing.Graph("graph");
                 GlobalVar.foundPath.Clear();
@@ -75,8 +75,14 @@ namespace FolderCrawling
                 GlobalVar.edges.Clear();
                 GlobalVar.visited.Clear();
 
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
                 var task = GraphViewer.Launch();
                 await Task.WhenAll(task);
+                watch.Stop();
+                materialLabel9.Text = (watch.ElapsedMilliseconds).ToString() + " ms";
+
+
                 initializedFoundPath(); // add found path to linklabel
 
             }
@@ -274,7 +280,7 @@ namespace FolderCrawling
                                 colorPath(curNode, temp, "blue", graph);
                                 graph.FindNode(temp.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                                 Form1.updateGraph();
-                                await Task.Delay(500);
+                                await Task.Delay(delay);
                                 GlobalVar.foundPath.Add(temp.path);
                                 if (!allOccurence)
                                 {
