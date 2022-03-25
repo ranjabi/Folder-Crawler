@@ -159,6 +159,11 @@ namespace FolderCrawling
             {
                 linkLabel1.Links.Add(allPath.IndexOf(foundPath), foundPath.Length);
             }
+            if (linkLabel1.Text == "")
+            {
+                linkLabel1.Links.Clear();
+                linkLabel1.Text = "None";
+            }
         }
 
         class GraphViewer
@@ -174,7 +179,7 @@ namespace FolderCrawling
             }
 
             public static async Task DFS(List<string> foundPath, bool allOccurence, string searchVal, Dictionary<string, bool> visited, Node tree, Microsoft.Msagl.Drawing.Graph graph)
-            // perform BFS
+            // perform DFS
             {
 
                 if (!allOccurence && GlobalVar.found)
@@ -226,7 +231,7 @@ namespace FolderCrawling
             }
 
             static async Task BFS(string path, Node startNode, string searchVal, Microsoft.Msagl.Drawing.Graph graph, bool allOccurence)
-            // perform DFS
+            // perform BFS
             {
                 bool found = false;
                 searchVal = @"^" + searchVal + @"\s*\b";
@@ -340,7 +345,8 @@ namespace FolderCrawling
 
                         if (graph.FindNode(parentFolderName) != null)
                         {
-                            parentFolderName += " ";
+                            GlobalVar.folderAddon += " ";
+                            parentFolderName += GlobalVar.folderAddon;
                             //MessageBox.Show(root + parentFolderName);
                         }
                         Node temp = new Node(parentFolderName, tree, dir, new List<Node>());
@@ -360,8 +366,8 @@ namespace FolderCrawling
                     GlobalVar.parentFileName = file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1);
                     if (graph.FindNode(GlobalVar.parentFileName) != null)
                     {
-                        GlobalVar.addon += " ";
-                        GlobalVar.parentFileName += GlobalVar.addon;
+                        GlobalVar.fileAddon += " ";
+                        GlobalVar.parentFileName += GlobalVar.fileAddon;
                         //MessageBox.Show(root + parentFolderName);
                     }
 
@@ -475,7 +481,8 @@ public static class GlobalVar
         public static string searchVal = "";
         public static bool allOccurence;
         public static string method;
-        public static string addon = "";
+        public static string folderAddon = "";
+        public static string fileAddon = "";
         public static string parentFileName = "";
         public static List<string> foundPath = new List<string>();
         public static Dictionary<string, Edge> edges = new Dictionary<string, Edge>();

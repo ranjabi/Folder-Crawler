@@ -141,7 +141,7 @@
             this.materialLabel2.Name = "materialLabel2";
             this.materialLabel2.Size = new System.Drawing.Size(114, 19);
             this.materialLabel2.TabIndex = 22;
-            this.materialLabel2.Text = "Input File Name";
+            this.materialLabel2.Text = "Input Folder/File Name";
             // 
             // materialSingleLineTextField1
             // 
@@ -265,7 +265,7 @@
             this.materialLabel6.Name = "materialLabel6";
             this.materialLabel6.Size = new System.Drawing.Size(121, 19);
             this.materialLabel6.TabIndex = 30;
-            this.materialLabel6.Text = "Path Founded at:";
+            this.materialLabel6.Text = "Path Expected to be Found at:";
             this.materialLabel6.Click += new System.EventHandler(this.materialLabel6_Click);
             // 
             // materialLabel7
