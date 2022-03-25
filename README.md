@@ -11,6 +11,15 @@ Install-Package AutomaticGraphLayout.Drawing -Version 1.1.11
 Install-Package AutomaticGraphLayout.WpfGraphControl -Version 1.1.11
 Install-Package AutomaticGraphLayout.GraphViewerGDI -Version 1.1.11
 ```
+You also need to install the MaterialSkin via NuGet. Follow this step.
+
+1. Right-click on the project in the solution explorer
+2. Select `Manage NuGet Packages`
+3. Go to Browse tab and search for `MaterialSkin`
+4. Install it and the Material Controls should automatically be added to the Control Toolbox
+
+> If something goes wrongly on installing the MaterialSkin, you could check it in https://ourcodeworld.com/articles/read/441/how-to-use-material-design-controls-with-c-in-your-winforms-application or another resources
+
 ## iii. How to Compile
 Open `Folder-Crawling-BFS-DFS/src/FolderCrawling.sln` on Visual Studio. Choose **Build -> Build Solution (Ctrl + Shift + B)**. Press **Start Without Debugging Button (Ctrl + F5)**.
 
