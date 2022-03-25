@@ -21,10 +21,10 @@ You also need to install the MaterialSkin via NuGet. Follow these steps.
 > If something goes wrongly on installing the MaterialSkin, you could check it in https://ourcodeworld.com/articles/read/441/how-to-use-material-design-controls-with-c-in-your-winforms-application or another resources
 
 ## iii. How to Compile
-Open `Folder-Crawling-BFS-DFS/src/FolderCrawling.sln` on Visual Studio. Choose **Build -> Build Solution (Ctrl + Shift + B)**. Press **Start Without Debugging Button (Ctrl + F5)**.
+Open `Tubes2_13520002/src/FolderCrawling.sln` on Visual Studio. Choose **Build -> Build Solution (Ctrl + Shift + B)**. Press **Start Without Debugging Button (Ctrl + F5)**.
 
 ## iv. Running the Program
-1. Open `Folder-Crawling-BFS-DFS/bin/FolderCrawling.exe`
+1. Open `Tubes2_13520002/bin/FolderCrawling.exe`
 2. Choose starting directory by pressing **CHOOSE YOUR STARTING FOLDER** button
 3. Input Folder/File Name
 4. Select "Find All Occurances" to find all folder/file with same name.
