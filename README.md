@@ -24,12 +24,13 @@ You also need to install the MaterialSkin via NuGet. Follow these steps.
 Open `Folder-Crawling-BFS-DFS/src/FolderCrawling.sln` on Visual Studio. Choose **Build -> Build Solution (Ctrl + Shift + B)**. Press **Start Without Debugging Button (Ctrl + F5)**.
 
 ## iv. Running the Program
-1. Choose starting directory by pressing **CHOOSE YOUR STARTING FOLDER** button.
-2. Input Folder/File Name.
-3. Select "Find All Occurances" to find all folder/file with same name.
-4. Choose searching method (BFS/DFS).
-5. Set Visualizer Speed
-5. Click **Search** button.
+1. Open `Folder-Crawling-BFS-DFS/bin/FolderCrawling.exe`
+2. Choose starting directory by pressing **CHOOSE YOUR STARTING FOLDER** button
+3. Input Folder/File Name
+4. Select "Find All Occurances" to find all folder/file with same name.
+5. Choose searching method (BFS/DFS)
+6. Set Visualizer Speed
+7. Click **Search** button
 
 ## v. Author
 | Name          | NIM           |

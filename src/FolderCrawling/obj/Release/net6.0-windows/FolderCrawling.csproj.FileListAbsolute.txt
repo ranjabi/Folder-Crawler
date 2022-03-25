@@ -20,3 +20,5 @@ C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\ob
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Release\net6.0-windows\FolderCrawling.pdb
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Release\net6.0-windows\FolderCrawling.genruntimeconfig.cache
 C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Release\net6.0-windows\ref\FolderCrawling.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\bin\Release\net6.0-windows\MaterialSkin.dll
+C:\Users\FikriRanjabi\source\repos\Folder-Crawling-BFS-DFS\src\FolderCrawling\obj\Release\net6.0-windows\FolderCrawling.Properties.Resources.resources
