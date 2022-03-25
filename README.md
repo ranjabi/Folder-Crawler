@@ -11,7 +11,7 @@ Install-Package AutomaticGraphLayout.Drawing -Version 1.1.11
 Install-Package AutomaticGraphLayout.WpfGraphControl -Version 1.1.11
 Install-Package AutomaticGraphLayout.GraphViewerGDI -Version 1.1.11
 ```
-You also need to install the MaterialSkin via NuGet. Follow this step.
+You also need to install the MaterialSkin via NuGet. Follow these steps.
 
 1. Right-click on the project in the solution explorer
 2. Select `Manage NuGet Packages`
